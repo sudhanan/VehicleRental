@@ -1,0 +1,32 @@
+<div>
+  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="!isVehiclesEmpty">
+    <thead>
+      <tr>
+        <th>Make</th>
+        <th>Model</th>
+        <th>Vehicle Type</th>
+        <th>Total Cost (in GBP)</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let vehicle of vehicles">
+        <td>{{ vehicle.make }}</td>
+        <td>{{ vehicle.model }}</td>
+        <td>{{ vehicle.vehicleType }}</td>
+        <td>{{ vehicle.totalCost }}</td>
+        <td>
+          <button type="button" (click)="ReserveVehicle(vehicle)">Reserve</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div>
+  <!--<booking-confirm-popup-component *ngIf="bookingRefId > 0"-->
+                                   <!--[bookingRefId]="bookingRefId"
+                                   [reservedBooking]="reservedBooking"
+                                   [displayedColumns]="displayedColumns">-->
+  <!--</booking-confirm-popup-component>-->
+</div>

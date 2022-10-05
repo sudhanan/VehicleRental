@@ -1,0 +1,60 @@
+<h2>Vehicle Rental Booking</h2>
+<br />
+
+<div class="div-spacer"></div>
+
+<div>
+  <form [formGroup]="vehicleSearchForm" (ngSubmit)="Search()">
+    <label for="firstName"> First Name*</label>
+    <input type="text" formControlName="firstName" />
+    <span class="alert" *ngIf="firstName && firstName.invalid && firstName.touched">Firstname is Required</span>
+    <br /><br />
+
+    <label for="lastName"> Last Name*</label>
+    <input type="text" formControlName="lastName" />
+    <span class="alert" *ngIf="lastName && lastName.invalid && lastName.touched">LastName is Required</span>
+    <br /><br />
+
+    <label for="email"> Email*</label>
+    <input type="email" formControlName="email" />
+    <span class="alert" *ngIf="email && email.invalid && email.touched">Please enter a valid email</span>
+    <br /><br />
+
+    <label for="startDate"> Start Date*</label>
+    <input type="date" formControlName="startDate" />
+    <span class="alert" *ngIf="startDate && vehicleSearchForm.errors?.invalidDate">Start date must be before End Date</span>
+    <br /><br />
+
+    <label for="endDate"> End Date*</label>
+    <input type="date" formControlName="endDate" />
+    <span class="alert" *ngIf="endDate && vehicleSearchForm.errors?.invalidSearchRange">Booking is allowed for 21 days inclusive of Start and End Date</span>
+    <br /><br />
+
+    <label for="rentalCountry">Rental Country*</label>
+    <select formControlName="rentalCountry">
+      <option *ngFor="let country of countries">{{country.countryName}}</option>
+    </select><br /><br />
+
+    <label for="vehicleCategory">Vehicle Category (Optional)</label>
+    <select formControlName="vehicleCategory">
+      <option value="" *ngIf="vehicleCategory.untouched || vehicleCategory.reset"></option>
+      <option *ngFor="let type of vehicleTypes">{{type}}</option>
+    </select>
+    <br />
+    <br />
+
+    <label for="vehicleCategory">Minimum Passenger Seats (Optional)</label>
+    <input type="number" formControlName="numberPassengerSeats" />
+    <br />
+    <br />
+
+    <button type="submit" (click)="Reset()" >Reset</button>
+    <span class="spacer"></span>
+    <button type="submit" [disabled]="vehicleSearchForm.invalid">Submit </button>
+
+  </form>
+</div>
+
+<div class="div-spacer"></div>
+
+<booking [vehicles]="vehicles" [bookingInputs]="bookingInputs" [isVehiclesEmpty]="isVehiclesEmpty" (bookingSuccessful)="Reset()"></booking>

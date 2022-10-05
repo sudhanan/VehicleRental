@@ -1,0 +1,20 @@
+label {
+  width: 300px
+}
+
+select, input {
+  width: 200px
+}
+
+.alert {
+  margin-left: 20px;
+  color: red;
+}
+
+.spacer {
+  padding: 20px
+}
+
+.div-spacer {
+  margin: 20px 0px 20px
+}
