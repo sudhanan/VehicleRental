@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BookingConfirmPopup } from '../booking-confirm-popup/booking-confirm-popup.component';
 import { BookingInputs } from '../models/BookingInputs';
 import { BookingResults } from '../models/BookingResults';
-import { VehicleSearchResults} from '../models/Vehicles';
+import { SearchResults, VehicleDetails} from '../models/Vehicles';
 import { BookingService } from '../services/booking.service';
 
 
@@ -14,7 +14,7 @@ import { BookingService } from '../services/booking.service';
 })
 export class BookingComponent {
 
-  @Input() vehicles: VehicleSearchResults[] = null;
+  @Input() vehicles: VehicleDetails[] = null;
   @Input() bookingInputs: BookingInputs = null;
   @Input() isVehiclesEmpty: boolean = true;
 
@@ -32,7 +32,7 @@ export class BookingComponent {
     this.baseUrl = baseUrl;
   }
 
-  public ReserveVehicle(vehicle: VehicleSearchResults) {
+  public ReserveVehicle(vehicle: VehicleDetails) {
 
     //add selected vehicle to booking inputs
     this.bookingInputs.selectedVehicle = vehicle;
@@ -54,10 +54,10 @@ export class BookingComponent {
 
     });
 
-    dialogRef.afterClosed().subscribe(confirmedBookingId => {
-      if (confirmedBookingId <= 0)
+    dialogRef.afterClosed().subscribe(bookingResults => {
+      if (bookingResults == null)
         return;
-      this.bookingService.ConfirmBooking(confirmedBookingId).subscribe(result => {
+      this.bookingService.ConfirmBooking(bookingResults).subscribe(result => {
         if (result) {
           this.isVehiclesEmpty = true;
           this.bookingSuccessful.emit(true);

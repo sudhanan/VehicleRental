@@ -193,9 +193,36 @@ namespace VehicleRental.Business.UnitTests.Tests
                 TotalCost = 345.17
             };
 
-            var bookingId = await bookingLogic.AddBooking(renterId, bookingStatusId, vehicle, startDate, endDate);
+            var bookingrefId = await bookingLogic.AddBooking(renterId, bookingStatusId, vehicle, startDate, endDate);
+
+            var bookingResults = new BookingResults
+            {
+
+                bookingInputs = new BookingInputs
+                {
+                    FirstName = "Jhon",
+                    LastName = "Smith",
+                    Email = "Jhon.Smith@email.com",
+                    RentalCountryCode = "Italy",
+                    StartDate = new DateTime(2022, 09, 29),
+                    EndDate = new DateTime(2022, 09, 29),
+                    VehicleType = "",
+                    NumberPassengerSeats = 0,
+                    SelectedVehicle = new VehicleDetails
+                    {
+                        ID = 1,
+                        Make = "Fiat",
+                        Model = "500",
+                        VehicleType = "Hatchback",
+                        FleetQuantity = 5,
+                        TotalCost = 130.88
+                    }
+                },
+                BookingRefId = bookingrefId,
+                BookingStatus = "Reserved"
+            };
             
-            var result = await bookingLogic.ConfirmBooking(bookingId);
+            var result = await bookingLogic.ConfirmBooking(bookingResults);
 
             Assert.True(result);
 
@@ -207,8 +234,34 @@ namespace VehicleRental.Business.UnitTests.Tests
         {
             var bookingLogic = new BookingLogic(_masterContext, configuration);
 
+            var bookingResults = new BookingResults
+            {
 
-            var result = await bookingLogic.ConfirmBooking(-1);
+                bookingInputs = new BookingInputs
+                {
+                    FirstName = "Jhon",
+                    LastName = "Smith",
+                    Email = "Jhon.Smith@email.com",
+                    RentalCountryCode = "Italy",
+                    StartDate = new DateTime(2022, 09, 29),
+                    EndDate = new DateTime(2022, 09, 29),
+                    VehicleType = "",
+                    NumberPassengerSeats = 0,
+                    SelectedVehicle = new VehicleDetails
+                    {
+                        ID = 1,
+                        Make = "Fiat",
+                        Model = "500",
+                        VehicleType = "Hatchback",
+                        FleetQuantity = 5,
+                        TotalCost = 130.88
+                    }
+                },
+                BookingRefId = -1,
+                BookingStatus = "Reserved"
+            };
+
+            var result = await bookingLogic.ConfirmBooking(bookingResults);
 
             Assert.False(result);
 

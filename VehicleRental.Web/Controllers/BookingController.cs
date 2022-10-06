@@ -38,13 +38,13 @@ namespace VehicleRental.Web.Controllers
         }
 
 
-        [Route("ConfirmBooking/{bookingRefId}")]
+        [Route("ConfirmBooking")]
         [HttpPost]
-        public async Task<bool> ConfirmBooking(int bookingRefId)
+        public async Task<bool> ConfirmBooking(BookingResults bookingResults)
         {
             try
             {
-                bool result = await _bookingLogic.ConfirmBooking(bookingRefId);
+                bool result = await _bookingLogic.ConfirmBooking(bookingResults);
                 return result;
             }
             catch

@@ -1,10 +1,10 @@
+import { BookingInputs } from "./BookingInputs";
+
 export class BookingResults {
 
   bookingRefId: number;
-  make: string;
-  model: string;
-  startDate: Date;
-  endDate: Date;
-  totalCost: number;
+
+  bookingInputs: BookingInputs;
+
   bookingStatus: string;
 }

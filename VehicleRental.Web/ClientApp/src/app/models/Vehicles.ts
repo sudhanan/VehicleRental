@@ -1,17 +1,22 @@
+import { BookingInputs } from "./BookingInputs";
 
-export class VehicleSearchResults{
-  id: number;
-  make: string;
-  model: string;
-  vehicleType: string;
-  numberPassengerSeats: string;
-  fleetQuantity: number;
-  startDate: Date;
-  endDate: Date;
-  totalCost: number;
+export class SearchResults{
+  bookingInputs: BookingInputs;
+  vehicleDetails: VehicleDetails[];
  }
 
 export class VehiclesType {
   id: number;
   type: string;
+}
+
+
+export class VehicleDetails {
+
+  id: number;
+  make: string;
+  model: string;
+  vehicleType: string;
+  fleetQuantity: string;
+  totalCost: number;
 }

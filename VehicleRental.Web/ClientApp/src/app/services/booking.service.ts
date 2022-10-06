@@ -30,13 +30,13 @@ export class BookingService {
       }, error => console.error(error)));
   }
 
-  public ConfirmBooking(bookingRefId: number) {
-    let url = this.baseUrl + 'Booking/ConfirmBooking/' + bookingRefId;
+  public ConfirmBooking(bookingResults: BookingResults) {
+    let url = this.baseUrl + 'Booking/ConfirmBooking/';
 
     let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     let options = { header: headers };
 
-    return this.httpClient.post(url, options).pipe(
+    return this.httpClient.post(url, bookingResults, options).pipe(
       map(result => {
         return result;
       }, error => console.error(error)));

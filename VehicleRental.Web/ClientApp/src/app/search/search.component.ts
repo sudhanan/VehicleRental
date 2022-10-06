@@ -3,7 +3,7 @@ import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BookingInputs } from '../models/BookingInputs';
 import { Countries } from '../models/Countries';
-import { VehicleSearchResults, VehiclesType } from '../models/Vehicles';
+import { VehiclesType } from '../models/Vehicles';
 import { SearchService } from '../services/search.service';
 
 function calculateDateDiff(endDate: Date, startDate: Date) {
@@ -28,7 +28,7 @@ export class SearchComponent {
   vehicles: any;
   isVehiclesEmpty: boolean = true;
   isBookingConfirmed: boolean = false;
-
+  
   public vehicleSearchForm: FormGroup;
   public get firstName() { return this.vehicleSearchForm.get('firstName'); }
   public get lastName() { return this.vehicleSearchForm.get('lastName'); }
@@ -75,8 +75,8 @@ export class SearchComponent {
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
-      startDate: new FormControl('', [Validators.required]),
-      endDate: new FormControl('', [Validators.required]),
+      startDate: new FormControl(new Date(Date.now()), [Validators.required]),
+      endDate: new FormControl(new Date(Date.now()), [Validators.required]),
       rentalCountry: new FormControl('', Validators.required),
       vehicleCategory: new FormControl(''),
       numberPassengerSeats: new FormControl(0, Validators.min(0)),
@@ -86,13 +86,15 @@ export class SearchComponent {
 
 
   public BookingInputs() {
-    
+
+    this.bookingInputs = new BookingInputs();
+
     this.bookingInputs.firstName = this.firstName.value;
     this.bookingInputs.lastName = this.lastName.value;
     this.bookingInputs.email = this.email.value;
     this.bookingInputs.startDate = this.startDate.value;
     this.bookingInputs.endDate = this.endDate.value;
-    this.bookingInputs.rentalCountryCode = this.rentalCountry.value == undefined ? this.countries[0].isocode : this.countries.find(x => x.countryName = this.rentalCountry.value).isocode;
+    this.bookingInputs.rentalCountryCode = this.rentalCountry.value == undefined ? this.countries[0].isocode : this.countries.find(x => x.countryName == this.rentalCountry.value).isocode;
     this.bookingInputs.vehicleType = this.vehicleCategory.value == undefined ? '' : this.vehicleCategory.value;
     this.bookingInputs.numberPassengerSeats = this.numberPassengerSeats.value;
     
@@ -105,25 +107,28 @@ export class SearchComponent {
 
     let bookingInputs = this.BookingInputs();
 
-    this.searchService.GetVehicles(bookingInputs).subscribe(result => {
-      this.vehicles = result.vehicleDetails;
-      if (this.vehicles.length > 0)
-        this.isVehiclesEmpty = false;
-    })
+    if (bookingInputs.startDate !== null && bookingInputs.endDate !== null) {
+
+      this.searchService.GetVehicles(bookingInputs).subscribe(result => {
+        this.vehicles = result.vehicleDetails;
+        if (this.vehicles.length > 0)
+          this.isVehiclesEmpty = false;
+      }, error => window.alert("Search Failed: " + JSON.stringify(error)))
+    }
   }
 
   public GetVehiclesType() {
     this.searchService.GetVehiclesType().subscribe(result => {
       this.vehicleTypes = result;
       this.vehicleCategory.setValue('');
-    })
+    }, error => window.alert("Error occured while Search: " + JSON.stringify(error)))
   }
 
   public GetCountries() {
     this.searchService.GetCountries().subscribe(result => {
       this.countries = result;
       this.rentalCountry.setValue(this.countries[0].countryName);
-    })
+    }, error => window.alert("Error occured while Search: " + JSON.stringify(error)))
   }
 
 
@@ -137,12 +142,14 @@ export class SearchComponent {
     //hide serach results
     this.isVehiclesEmpty = true;
     this.isBookingConfirmed = false;
+    this.bookingInputs = null;
 
     //reset form
     this.vehicleSearchForm.reset();
     //setdefualts 
     this.numberPassengerSeats.setValue(0);
     this.rentalCountry.setValue(this.countries[0].countryName);
+
   }
 
   onConfirmed(data) {

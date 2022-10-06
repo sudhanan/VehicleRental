@@ -17,7 +17,7 @@ export class BookingConfirmPopup {
   }
 
   Cancel() {
-    this.dialogRef.close(-1);
+    this.dialogRef.close(new BookingResults());
   }
 
 }

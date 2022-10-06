@@ -16,11 +16,11 @@
       <tbody>
         <tr>
           <td>{{ data.bookingRefId }}</td>
-          <td>{{ data.make }}</td>
-          <td>{{ data.model }}</td>
-          <td>{{ data.startDate | date }}</td>
-          <td>{{ data.endDate | date }}</td>
-          <td>{{ data.totalCost }}</td>
+          <td>{{ data.bookingInputs.selectedVehicle.make }}</td>
+          <td>{{ data.bookingInputs.selectedVehicle.model }}</td>
+          <td>{{ data.bookingInputs.startDate | date }}</td>
+          <td>{{ data.bookingInputs.endDate | date }}</td>
+          <td>{{ data.bookingInputs.selectedVehicle.totalCost }}</td>
           <td>{{ data.bookingStatus }}</td>
         </tr>
       </tbody>
@@ -33,5 +33,5 @@
 
   <div mat-dialog-actions>
     <button mat-button style="margin-right:20px" (click)="Cancel()">Cancel</button>
-    <button mat-button style="margin-left:20px" [mat-dialog-close]="data.bookingRefId" cdkFocusInitial>Confirm</button>
+    <button mat-button style="margin-left:20px" [mat-dialog-close]="data" cdkFocusInitial>Confirm</button>
   </div>

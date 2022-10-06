@@ -28,7 +28,7 @@ export class SearchService {
     return this.httpClient.post(url, bookingInputs, options).pipe(
       map(result => {
         return result
-      }, error => console.error(error)));
+      }));
   }
 
 
@@ -37,7 +37,7 @@ export class SearchService {
     let url = this.baseUrl + 'Search/GetVehiclesType';
     return this.httpClient.get(url).pipe(map(result => {
       return result;
-    }, error => console.error(error)));
+    }));
 
   }
 
@@ -46,6 +46,6 @@ export class SearchService {
     let url = this.baseUrl + 'Search/Getcountries';
     return this.httpClient.get(url).pipe(map((result: Countries[]) => {
       return result;
-    }, error => console.error(error)));
+    }));
   }
 }

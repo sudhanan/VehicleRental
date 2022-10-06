@@ -1,4 +1,4 @@
-import { VehicleSearchResults } from "./Vehicles";
+import { VehicleDetails } from "./Vehicles";
 
 export class BookingInputs{
   firstName: string;
@@ -10,5 +10,5 @@ export class BookingInputs{
   startDate: Date;
   endDate: Date;
 
-  selectedVehicle: VehicleSearchResults;
+  selectedVehicle: VehicleDetails;
 }

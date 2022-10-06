@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Security.Cryptography;
 using VehicleRental.DAL.Data;
 using VehicleRental.DAL.Models;
 
@@ -40,9 +41,6 @@ namespace VehicleRental.Business
 
             try
             {
-
-                var check = _masterContext.Bookings.Select(x => x);
-
 
                 //Get booking overlaps (only confirmed) to check for availability
                 var bookinOverlaps = (from b in _masterContext.Bookings
@@ -93,7 +91,9 @@ namespace VehicleRental.Business
                 if (renterIdIfAvailable <= 0)
                 {
                     _masterContext.Add<Renter>(renter);
-                    return await _masterContext.SaveChangesAsync();
+                    await _masterContext.SaveChangesAsync();
+
+                    return renter.Id;
                 }
                 return renterIdIfAvailable;
             }
@@ -164,11 +164,7 @@ namespace VehicleRental.Business
                                        {
 
                                            BookingRefId = b.Id,
-                                           Make = ve.Make,
-                                           Model = ve.Model,
-                                           StartDate = b.StartDate,
-                                           EndDate = b.EndDate,
-                                           TotalCost = b.TotalCose,
+                                           bookingInputs = bookingInputs,
                                            BookingStatus = bs.Status
                                        }).FirstOrDefault();
 
@@ -183,14 +179,16 @@ namespace VehicleRental.Business
             }
         }
 
-        public async Task<bool> ConfirmBooking(int bookingRefId)
+        public async Task<bool> ConfirmBooking(BookingResults bookingResults)
         {
             bool isSuccess = false;
             try
             {
+                bool isAvailable = await IsVehicleAvailable(bookingResults.bookingInputs);
+
                 var booking = await (from b in _masterContext.Bookings
                                      join bs in _masterContext.BookingStatuses on b.BookingStatusId equals bs.Id
-                                     where b.Id == bookingRefId && bs.Status == "Reserved"
+                                     where b.Id == bookingResults.BookingRefId && bs.Status == "Reserved"
                                      select b)
                                         .FirstOrDefaultAsync();
 
