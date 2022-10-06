@@ -186,24 +186,24 @@ namespace VehicleRental.Business
             {
                 bool isAvailable = await IsVehicleAvailable(bookingResults.bookingInputs);
 
-                var booking = await (from b in _masterContext.Bookings
-                                     join bs in _masterContext.BookingStatuses on b.BookingStatusId equals bs.Id
-                                     where b.Id == bookingResults.BookingRefId && bs.Status == "Reserved"
-                                     select b)
-                                        .FirstOrDefaultAsync();
-
-                if (booking != null)
+                if (isAvailable)
                 {
-                    booking.BookingStatusId = await GetBookingStatusId("Confirmed");
 
-                    _masterContext.Update<Bookings>(booking);
-                    await _masterContext.SaveChangesAsync();
+                    var booking = await (from b in _masterContext.Bookings
+                                         join bs in _masterContext.BookingStatuses on b.BookingStatusId equals bs.Id
+                                         where b.Id == bookingResults.BookingRefId && bs.Status == "Reserved"
+                                         select b)
+                                            .FirstOrDefaultAsync();
 
-                    isSuccess = true;
-                }
-                else
-                {
-                    isSuccess = false;
+                    if (booking != null)
+                    {
+                        booking.BookingStatusId = await GetBookingStatusId("Confirmed");
+
+                        _masterContext.Update<Bookings>(booking);
+                        await _masterContext.SaveChangesAsync();
+
+                        isSuccess = true;
+                    }
                 }
 
                 return isSuccess;
