@@ -26,7 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VehicleRental.Business\VehicleRental.Business.csproj" />
-    <ProjectReference Include="..\VehicleRental\VehicleRental.DAL.csproj" />
+    <ProjectReference Include="..\VehicleRental.DAL\VehicleRental.DAL.csproj" />
   </ItemGroup>
 
 </Project>

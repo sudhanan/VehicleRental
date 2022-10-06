@@ -57,4 +57,12 @@
 
 <div class="div-spacer"></div>
 
-<booking [vehicles]="vehicles" [bookingInputs]="bookingInputs" [isVehiclesEmpty]="isVehiclesEmpty" (bookingSuccessful)="Reset()"></booking>
+<booking [vehicles]="vehicles" [bookingInputs]="bookingInputs" [isVehiclesEmpty]="isVehiclesEmpty" (bookingSuccessful)="onConfirmed($event)"></booking>
+
+<div *ngIf="isBookingConfirmed">
+  <div class="div-spacer"></div>
+
+  <span class="booking-confirmed"> Your booking has been confirmed!. Click "Reset" to start new booking. </span>
+
+</div>
+ 

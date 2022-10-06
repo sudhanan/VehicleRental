@@ -27,6 +27,7 @@ export class SearchComponent {
   bookingInputs: BookingInputs = new BookingInputs();
   vehicles: any;
   isVehiclesEmpty: boolean = true;
+  isBookingConfirmed: boolean = false;
 
   public vehicleSearchForm: FormGroup;
   public get firstName() { return this.vehicleSearchForm.get('firstName'); }
@@ -91,7 +92,7 @@ export class SearchComponent {
     this.bookingInputs.email = this.email.value;
     this.bookingInputs.startDate = this.startDate.value;
     this.bookingInputs.endDate = this.endDate.value;
-    this.bookingInputs.rentalCountryCode = this.rentalCountry.value == undefined ? this.countries[0].isoCode : this.countries.find(x => x.countryName = this.rentalCountry.value).isoCode;
+    this.bookingInputs.rentalCountryCode = this.rentalCountry.value == undefined ? this.countries[0].isocode : this.countries.find(x => x.countryName = this.rentalCountry.value).isocode;
     this.bookingInputs.vehicleType = this.vehicleCategory.value == undefined ? '' : this.vehicleCategory.value;
     this.bookingInputs.numberPassengerSeats = this.numberPassengerSeats.value;
     
@@ -135,12 +136,17 @@ export class SearchComponent {
 
     //hide serach results
     this.isVehiclesEmpty = true;
+    this.isBookingConfirmed = false;
 
     //reset form
     this.vehicleSearchForm.reset();
     //setdefualts 
     this.numberPassengerSeats.setValue(0);
     this.rentalCountry.setValue(this.countries[0].countryName);
+  }
+
+  onConfirmed(data) {
+    this.isBookingConfirmed = data;
   }
 
 }

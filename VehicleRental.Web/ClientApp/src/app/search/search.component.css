@@ -18,3 +18,8 @@ select, input {
 .div-spacer {
   margin: 20px 0px 20px
 }
+
+.booking-confirmed {
+    color: forestgreen;
+    font-weight: bold;
+}
